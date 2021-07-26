@@ -1,0 +1,55 @@
+package com.artfelt.theaudiodb.ui.ranking
+
+import android.view.View
+import android.widget.ImageView
+import android.widget.TextView
+import androidx.recyclerview.widget.RecyclerView
+import com.artfelt.theaudiodb.R
+import com.artfelt.theaudiodb.models.RankingAlbum
+import com.artfelt.theaudiodb.models.RankingSingle
+import com.artfelt.theaudiodb.utils.setImageURL
+
+class RankingAlbumViewHolder(
+    val container: View,
+    //private val listener: ArtworkDelegate
+) : RecyclerView.ViewHolder(container) {
+
+    private var mAlbumPosition: TextView = container.findViewById(R.id.textView_id_title_ranking)
+    private var mAlbumImage: ImageView = container.findViewById(R.id.imageView_title_ranking)
+    private var mAlbumArtist: TextView = container.findViewById(R.id.textView_title_artist_ranking)
+    private var mAlbumTitle: TextView = container.findViewById(R.id.textView_title_title_ranking)
+
+
+    fun bindView(album: RankingAlbum) {
+        initView(album)
+
+    }
+
+
+    private fun initView(album: RankingAlbum) {
+        initAlbumPosition(album)
+        initAlbumImage(album)
+        initAlbumArtist(album)
+        initAlbumTitle(album)
+    }
+
+    private fun initAlbumPosition(album: RankingAlbum) {
+        mAlbumPosition.text = album.chartPlace
+    }
+
+    private fun initAlbumImage(album: RankingAlbum) {
+        mAlbumImage.clipToOutline = true
+
+        if(!album.albumThumbnail.isNullOrEmpty()) {
+            mAlbumImage.setImageURL(album.albumThumbnail!!)
+        }
+    }
+
+    private fun initAlbumArtist(album: RankingAlbum) {
+        mAlbumArtist.text = album.artist
+    }
+
+    private fun initAlbumTitle(album: RankingAlbum) {
+        mAlbumTitle.text = album.album
+    }
+}
