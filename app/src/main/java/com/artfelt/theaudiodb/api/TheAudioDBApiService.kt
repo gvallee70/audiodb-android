@@ -2,10 +2,9 @@ package com.artfelt.theaudiodb.api
 
 import com.artfelt.theaudiodb.api.ranking.TrendingAlbumsResponse
 import com.artfelt.theaudiodb.api.ranking.TrendingSinglesResponse
-import com.artfelt.theaudiodb.api.artist.AlbumDetailsResponse
+import com.artfelt.theaudiodb.api.album.AlbumDetailsResponse
 import com.artfelt.theaudiodb.api.artist.ArtistDetailsResponse
-import com.artfelt.theaudiodb.api.artist.SingleDetailsResponse
-import com.artfelt.theaudiodb.models.single.Single
+import com.artfelt.theaudiodb.api.single.SingleDetailsResponse
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query

@@ -1,4 +1,4 @@
-package com.artfelt.theaudiodb.api.artist
+package com.artfelt.theaudiodb.api.single
 
 import com.artfelt.theaudiodb.models.single.Single
 import com.google.gson.annotations.SerializedName
