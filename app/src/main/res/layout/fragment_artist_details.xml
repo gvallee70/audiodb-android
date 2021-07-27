@@ -56,7 +56,7 @@
             android:layout_marginHorizontal="15dp"
             android:layout_marginTop="10dp"
             android:textColor="@color/grey"
-            android:maxLines="10"
+            android:maxLines="6"
             android:ellipsize="end"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/imageView_artist_header"

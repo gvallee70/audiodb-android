@@ -2,7 +2,7 @@ package com.artfelt.theaudiodb.models.single
 
 import com.google.gson.annotations.SerializedName
 
-data class LikedSingle(
+data class Single(
         @SerializedName("intScore")
         var score: String? = null,
 

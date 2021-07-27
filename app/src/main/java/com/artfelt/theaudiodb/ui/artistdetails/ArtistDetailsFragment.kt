@@ -1,4 +1,4 @@
-package com.artfelt.theaudiodb.ui.ranking.artistdetails
+package com.artfelt.theaudiodb.ui.artistdetails
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -14,9 +14,11 @@ import com.artfelt.theaudiodb.R
 import com.artfelt.theaudiodb.api.TheAudioDBClient
 import com.artfelt.theaudiodb.models.album.Album
 import com.artfelt.theaudiodb.models.artist.Artist
-import com.artfelt.theaudiodb.models.single.LikedSingle
-import com.artfelt.theaudiodb.ui.ranking.artistdetails.album.ArtistAlbumAdapter
-import com.artfelt.theaudiodb.ui.ranking.artistdetails.likedsingles.ArtistLikedSingleAdapter
+import com.artfelt.theaudiodb.models.single.Single
+import com.artfelt.theaudiodb.ui.albumdetails.AlbumDetailsFragment
+import com.artfelt.theaudiodb.ui.artistdetails.album.ArtistAlbumAdapter
+import com.artfelt.theaudiodb.ui.artistdetails.singles.ArtistSingleAdapter
+import com.artfelt.theaudiodb.ui.search.album.AlbumDelegate
 import com.artfelt.theaudiodb.utils.Toolbox
 import com.artfelt.theaudiodb.utils.setImageURL
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -26,10 +28,10 @@ import kotlinx.coroutines.launch
 import java.util.*
 import kotlin.collections.ArrayList
 
-class ArtistDetailsFragment: Fragment() {
+class ArtistDetailsFragment: Fragment(), AlbumDelegate {
 
     private lateinit var artistAlbumsAdapter: ArtistAlbumAdapter
-    private lateinit var artistLikedSingleAdapter: ArtistLikedSingleAdapter
+    private lateinit var artistSingleAdapter: ArtistSingleAdapter
 
     private lateinit var mArtist: Artist
     private lateinit var mArtistName: String
@@ -46,6 +48,8 @@ class ArtistDetailsFragment: Fragment() {
 
     companion object {
         const val ARTIST = "artist"
+        const val ALBUM = "album"
+
     }
 
 
@@ -135,7 +139,7 @@ class ArtistDetailsFragment: Fragment() {
 
 
     private fun initArtistAlbumsRecyclerView(albums: ArrayList<Album>) {
-        artistAlbumsAdapter = ArtistAlbumAdapter(this.requireContext(), albums)
+        artistAlbumsAdapter = ArtistAlbumAdapter(this.requireContext(), albums, this)
 
         mArtistAlbumsRecyclerView.removeAllViews()
         mArtistAlbumsRecyclerView.layoutManager = LinearLayoutManager(this.requireContext(), LinearLayoutManager.VERTICAL, false)
@@ -148,15 +152,15 @@ class ArtistDetailsFragment: Fragment() {
     }
 
 
-    private fun initArtistSinglesLikedRecyclerView(singlesLiked: ArrayList<LikedSingle>) {
-        artistLikedSingleAdapter = ArtistLikedSingleAdapter(this.requireContext(), singlesLiked)
+    private fun initArtistSinglesLikedRecyclerView(singles: ArrayList<Single>) {
+        artistSingleAdapter = ArtistSingleAdapter(this.requireContext(), singles)
 
         val itemDecoration = DividerItemDecoration(this.requireContext(), LinearLayoutManager.VERTICAL)
 
         mArtistSinglesLikedRecyclerView.addItemDecoration(itemDecoration)
         mArtistSinglesLikedRecyclerView.removeAllViews()
         mArtistSinglesLikedRecyclerView.layoutManager = LinearLayoutManager(this.requireContext(), LinearLayoutManager.VERTICAL, false)
-        mArtistSinglesLikedRecyclerView.adapter = artistLikedSingleAdapter
+        mArtistSinglesLikedRecyclerView.adapter = artistSingleAdapter
     }
 
 
@@ -195,11 +199,14 @@ class ArtistDetailsFragment: Fragment() {
     private fun getArtistAlbumsAPICall(complete: (ArrayList<Album>) -> Unit) {
         GlobalScope.launch(Dispatchers.Main) {
             try {
-                val getArtistDiscographyResponse = TheAudioDBClient().getApiService(this@ArtistDetailsFragment.requireContext()).getArtistDiscography(mArtistName!!)
+                val getArtistDiscographyResponse = TheAudioDBClient().getApiService(this@ArtistDetailsFragment.requireContext()).getArtistAlbumsDetails(mArtistName!!)
 
                 if (getArtistDiscographyResponse.isSuccessful && getArtistDiscographyResponse.body() != null) {
 
                     getArtistDiscographyResponse.body()?.let {
+                        it.albums?.sortByDescending {
+                            it.releasedYear?.toInt()
+                        }
                         complete(it.albums!!)
                     }
                 }
@@ -217,7 +224,7 @@ class ArtistDetailsFragment: Fragment() {
     }
 
 
-    private fun getArtistLikedSinglesAPICall(complete: (ArrayList<LikedSingle>) -> Unit) {
+    private fun getArtistLikedSinglesAPICall(complete: (ArrayList<Single>) -> Unit) {
         GlobalScope.launch(Dispatchers.Main) {
             try {
                 val getArtistLikedSinglesResponse = TheAudioDBClient().getApiService(this@ArtistDetailsFragment.requireContext()).getArtistLikedSingles(mArtistName!!)
@@ -225,10 +232,10 @@ class ArtistDetailsFragment: Fragment() {
                 if (getArtistLikedSinglesResponse.isSuccessful && getArtistLikedSinglesResponse.body() != null) {
 
                     getArtistLikedSinglesResponse.body()?.let {
-                        it.likedSingles?.sortByDescending {
+                        it.singles?.sortByDescending {
                             it.score?.toFloat()
                         }
-                        complete(it.likedSingles!!)
+                        complete(it.singles!!)
                     }
                 }
             } catch (e: Exception) {
@@ -237,6 +244,19 @@ class ArtistDetailsFragment: Fragment() {
         }
     }
 
+    override fun onClickAlbum(album: Album) {
+        val fragment = AlbumDetailsFragment()
+        val args = Bundle()
+        println(album.id)
+        args.putString(ALBUM, album.id)
+        fragment.arguments = args
+
+        parentFragmentManager
+                .beginTransaction()
+                .addToBackStack("ArtistDetailsFragment")
+                .replace(R.id.nav_host_fragment, fragment)
+                .commit()
+    }
 
 
 }

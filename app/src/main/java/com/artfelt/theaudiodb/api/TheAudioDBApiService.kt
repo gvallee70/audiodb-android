@@ -2,9 +2,10 @@ package com.artfelt.theaudiodb.api
 
 import com.artfelt.theaudiodb.api.ranking.TrendingAlbumsResponse
 import com.artfelt.theaudiodb.api.ranking.TrendingSinglesResponse
-import com.artfelt.theaudiodb.api.artist.ArtistAlbumResponse
+import com.artfelt.theaudiodb.api.artist.AlbumDetailsResponse
 import com.artfelt.theaudiodb.api.artist.ArtistDetailsResponse
-import com.artfelt.theaudiodb.api.artist.ArtistLikedSinglesResponse
+import com.artfelt.theaudiodb.api.artist.SingleDetailsResponse
+import com.artfelt.theaudiodb.models.single.Single
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query
@@ -21,15 +22,19 @@ interface TheAudioDBApiService {
     @GET("search.php")
     suspend fun getArtistDetails(@Query("s") artistName: String): Response<ArtistDetailsResponse>
 
+
     @GET("searchalbum.php")
-    suspend fun getArtistAlbumsDetails(@Query("s") artistName: String): Response<ArtistAlbumResponse>
-
-
-    @GET("discography.php")
-    suspend fun getArtistDiscography(@Query("s") artistName: String): Response<ArtistAlbumResponse>
+    suspend fun getArtistAlbumsDetails(@Query("s") artistName: String): Response<AlbumDetailsResponse>
 
 
     @GET("track-top10.php")
-    suspend fun getArtistLikedSingles(@Query("s") artistName: String): Response<ArtistLikedSinglesResponse>
+    suspend fun getArtistLikedSingles(@Query("s") artistName: String): Response<SingleDetailsResponse>
 
+
+    @GET("album.php")
+    suspend fun getAlbumDetails(@Query("m") albumId: String): Response<AlbumDetailsResponse>
+
+
+    @GET("track.php")
+    suspend fun getAlbumSinglesDetails(@Query("m") albumId: String): Response<SingleDetailsResponse>
 }

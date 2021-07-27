@@ -8,11 +8,13 @@
     <string name="label_artists">Artistes</string>
     <string name="label_albums">Albums</string>
     <string name="label_titles">Titres</string>
+    <string name="label_votes_count">%s vote(s)</string>
+    <string name="label_singles_count">%d chanson(s)</string>
     <string name="label_my_favorites">Mes artistes &amp; albums</string>
     <string name="label_loading_data">Chargement des données...</string>
     <string name="label_error_api">Impossible de récupérer certaines données</string>
     <string name="action_retry">Réessayer</string>
-    <string name="title_albums_count">Albums (%d)</string>
+    <string name="title_albums_count">Album(s) (%d)</string>
     <string name="title_singles_liked">Titres les plus appréciés</string>
 
 

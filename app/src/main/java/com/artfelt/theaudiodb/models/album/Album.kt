@@ -18,4 +18,14 @@ data class Album(
 
         @SerializedName("intYearReleased")
         var releasedYear: String? = null,
+
+        @SerializedName("intScore")
+        var score: String? = null,
+
+        @SerializedName("intScoreVotes")
+        var votes: String? = null,
+
+        @SerializedName("strDescriptionEN")
+        var description: String? = null,
 )
+

@@ -14,7 +14,7 @@ import com.artfelt.theaudiodb.R
 import com.artfelt.theaudiodb.api.TheAudioDBClient
 import com.artfelt.theaudiodb.models.album.RankingAlbum
 import com.artfelt.theaudiodb.models.single.RankingSingle
-import com.artfelt.theaudiodb.ui.ranking.artistdetails.ArtistDetailsFragment
+import com.artfelt.theaudiodb.ui.artistdetails.ArtistDetailsFragment
 import com.artfelt.theaudiodb.ui.ranking.rankingalbum.RankingAlbumDelegate
 import com.artfelt.theaudiodb.ui.ranking.rankingalbum.RankingAlbumsAdapter
 import com.artfelt.theaudiodb.ui.ranking.rankingsingle.RankingSingleDelegate

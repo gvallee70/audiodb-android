@@ -1,41 +1,37 @@
 package com.artfelt.theaudiodb.ui.search
 
-import android.graphics.Paint
 import android.graphics.Typeface
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Filter
 import android.widget.ImageView
 import androidx.appcompat.widget.SearchView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.artfelt.theaudiodb.R
 import com.artfelt.theaudiodb.api.TheAudioDBClient
 import com.artfelt.theaudiodb.models.album.Album
 import com.artfelt.theaudiodb.models.artist.Artist
-import com.artfelt.theaudiodb.ui.ranking.RankingFragment
-import com.artfelt.theaudiodb.ui.ranking.artistdetails.ArtistDetailsFragment
-import com.artfelt.theaudiodb.ui.ranking.rankingsingle.RankingSinglesAdapter
+import com.artfelt.theaudiodb.ui.albumdetails.AlbumDetailsFragment
+import com.artfelt.theaudiodb.ui.artistdetails.ArtistDetailsFragment
 import com.artfelt.theaudiodb.ui.search.album.AlbumAdapter
+import com.artfelt.theaudiodb.ui.search.album.AlbumDelegate
 import com.artfelt.theaudiodb.ui.search.artist.ArtistAdapter
 import com.artfelt.theaudiodb.ui.search.artist.ArtistDelegate
-import com.artfelt.theaudiodb.utils.Toolbox
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
-class SearchFragment : Fragment(), ArtistDelegate {
+class SearchFragment : Fragment(), ArtistDelegate, AlbumDelegate {
 
 
     companion object {
         const val ARTIST = "artist"
+        const val ALBUM = "album"
     }
 
     private lateinit var artistName: String
@@ -155,7 +151,7 @@ class SearchFragment : Fragment(), ArtistDelegate {
     private fun initAlbumsRecyclerView(albums: ArrayList<Album>) {
         mAlbumRecyclerView.visibility = View.VISIBLE
 
-        albumAdapter = AlbumAdapter(this.requireContext(), albums)
+        albumAdapter = AlbumAdapter(this.requireContext(), albums, this)
 
         mAlbumRecyclerView.removeAllViews()
         mAlbumRecyclerView.layoutManager = LinearLayoutManager(this.requireContext(), LinearLayoutManager.VERTICAL, false)
@@ -210,6 +206,19 @@ class SearchFragment : Fragment(), ArtistDelegate {
                 .replace(R.id.nav_host_fragment, fragment)
                 .commit()
     }
+
+
+    override fun onClickAlbum(album: Album) {
+        val fragment = AlbumDetailsFragment()
+        val args = Bundle()
+        args.putString(ALBUM, album.id)
+        fragment.arguments = args
+
+        parentFragmentManager
+                .beginTransaction()
+                .addToBackStack("SearchFragment")
+                .replace(R.id.nav_host_fragment, fragment)
+                .commit()    }
 
 
 }

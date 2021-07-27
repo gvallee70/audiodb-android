@@ -8,11 +8,12 @@ import com.artfelt.theaudiodb.R
 import com.artfelt.theaudiodb.models.album.Album
 import com.artfelt.theaudiodb.models.artist.Artist
 import com.artfelt.theaudiodb.models.single.RankingSingle
+import com.artfelt.theaudiodb.ui.ranking.rankingsingle.RankingSingleDelegate
 import com.artfelt.theaudiodb.utils.setImageURL
 
 class AlbumViewHolder(
         val container: View,
-        //private val listener: RankingSingleDelegate
+        private val listener: AlbumDelegate
 ) : RecyclerView.ViewHolder(container) {
 
     private var mAlbumImage: ImageView = container.findViewById(R.id.imageView_artist_album_cell)
@@ -23,7 +24,7 @@ class AlbumViewHolder(
     fun bindView(album: Album) {
         initView(album)
 
-        //manageOnClickArtist(artist)
+        manageOnClickAlbum(album)
     }
 
 
@@ -51,9 +52,9 @@ class AlbumViewHolder(
     }
 
 
-    private fun manageOnClickArtist(single: RankingSingle) {
+    private fun manageOnClickAlbum(album: Album) {
         container.setOnClickListener {
-            //listener.onClickArtist(single)
+            listener.onClickAlbum(album)
         }
     }
 }

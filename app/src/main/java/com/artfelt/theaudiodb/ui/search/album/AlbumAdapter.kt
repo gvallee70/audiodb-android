@@ -7,11 +7,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.artfelt.theaudiodb.R
 import com.artfelt.theaudiodb.models.album.Album
 import com.artfelt.theaudiodb.models.artist.Artist
+import com.artfelt.theaudiodb.ui.ranking.rankingsingle.RankingSingleDelegate
 import com.artfelt.theaudiodb.ui.search.artist.ArtistViewHolder
 
 class AlbumAdapter(val context: Context,
                    private var albums: ArrayList<Album>,
-        //private val listener: RankingSingleDelegate
+                   private val listener: AlbumDelegate
 ) : RecyclerView.Adapter<AlbumViewHolder>() {
 
     var albumsList = ArrayList<Album>(albums)
@@ -20,7 +21,7 @@ class AlbumAdapter(val context: Context,
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AlbumViewHolder {
         return AlbumViewHolder(
                 LayoutInflater.from(context).inflate(R.layout.item_album, parent, false),
-                //listener
+                listener
         )
     }
 
