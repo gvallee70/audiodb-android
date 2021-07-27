@@ -8,23 +8,26 @@ import android.view.ViewGroup
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.artfelt.theaudiodb.R
 import com.artfelt.theaudiodb.api.TheAudioDBClient
-import com.artfelt.theaudiodb.models.RankingAlbum
-import com.artfelt.theaudiodb.models.RankingSingle
+import com.artfelt.theaudiodb.models.album.RankingAlbum
+import com.artfelt.theaudiodb.models.single.RankingSingle
+import com.artfelt.theaudiodb.ui.ranking.artistdetails.ArtistDetailsFragment
+import com.artfelt.theaudiodb.ui.ranking.rankingalbum.RankingAlbumDelegate
+import com.artfelt.theaudiodb.ui.ranking.rankingalbum.RankingAlbumsAdapter
+import com.artfelt.theaudiodb.ui.ranking.rankingsingle.RankingSingleDelegate
+import com.artfelt.theaudiodb.ui.ranking.rankingsingle.RankingSinglesAdapter
 import com.artfelt.theaudiodb.utils.Toolbox
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.tabs.TabItem
 import com.google.android.material.tabs.TabLayout
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
-class RankingFragment : Fragment() {
-
-    private lateinit var rankingViewModel: RankingViewModel
+class RankingFragment : Fragment(), RankingSingleDelegate, RankingAlbumDelegate {
     private lateinit var rankingSinglesAdapter: RankingSinglesAdapter
     private lateinit var rankingAlbumsAdapter: RankingAlbumsAdapter
 
@@ -38,14 +41,26 @@ class RankingFragment : Fragment() {
     private lateinit var mTabItemAlbums: TabItem
 
 
+    companion object {
+        const val ARTIST = "artist"
+    }
+
     override fun onCreateView(
             inflater: LayoutInflater,
             container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View? {
-        rankingViewModel = ViewModelProvider(this).get(RankingViewModel::class.java)
 
-        val view = inflater.inflate(R.layout.fragment_ranking, container, false)
+        return inflater.inflate(R.layout.fragment_ranking, container, false)
+
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        var bottomNavigationView = activity?.findViewById<BottomNavigationView>(R.id.nav_view)
+
+        bottomNavigationView?.visibility = View.VISIBLE
 
         mRankingTitleTextView = view.findViewById(R.id.textView_title_ranking)
         mRankingLoadingTextView = view.findViewById(R.id.textView_titles_loading)
@@ -55,14 +70,20 @@ class RankingFragment : Fragment() {
 
         initView()
 
-        return view
     }
 
-    private fun initView() {
+        private fun initView() {
         initRankingTitle()
 
-        getUSTrendingSinglesAPICall()
-        getUSTrendingAlbumsAPICall()
+        getUSTrendingSinglesAPICall {
+            manageOnClickTabLayout(rankingSingles = it)
+            initSinglesRecyclerView(it)
+        }
+
+        getUSTrendingAlbumsAPICall {
+            manageOnClickTabLayout(rankingAlbums = it)
+        }
+
     }
 
     private fun initRankingTitle() {
@@ -71,14 +92,10 @@ class RankingFragment : Fragment() {
         mRankingTitleTextView.text = getString(R.string.title_ranking)
     }
 
-    private fun initTabBarTitles() {
-
-
-    }
 
 
     private fun initSinglesRecyclerView(rankingSingles: ArrayList<RankingSingle>) {
-        rankingSinglesAdapter = RankingSinglesAdapter(this.requireContext(), rankingSingles)
+        rankingSinglesAdapter = RankingSinglesAdapter(this.requireContext(), rankingSingles, this)
 
         mRankingRecyclerView.removeAllViews()
         mRankingRecyclerView.layoutManager = LinearLayoutManager(this.requireContext(), LinearLayoutManager.VERTICAL, false)
@@ -87,7 +104,7 @@ class RankingFragment : Fragment() {
 
 
     private fun initAlbumsRecyclerView(rankingAlbums: ArrayList<RankingAlbum>) {
-        rankingAlbumsAdapter = RankingAlbumsAdapter(this.requireContext(), rankingAlbums)
+        rankingAlbumsAdapter = RankingAlbumsAdapter(this.requireContext(), rankingAlbums, this)
 
         mRankingRecyclerView.removeAllViews()
         mRankingRecyclerView.layoutManager = LinearLayoutManager(this.requireContext(), LinearLayoutManager.VERTICAL, false)
@@ -134,7 +151,7 @@ class RankingFragment : Fragment() {
         })
     }
 
-    private fun getUSTrendingSinglesAPICall() {
+    private fun getUSTrendingSinglesAPICall(complete: (ArrayList<RankingSingle>) -> Unit) {
         initLoadingDataView()
 
         GlobalScope.launch(Dispatchers.Main) {
@@ -148,8 +165,8 @@ class RankingFragment : Fragment() {
                         it.trending?.sortBy {
                             it.chartPlace?.toInt()
                         }
-                        manageOnClickTabLayout(rankingSingles = it.trending!!)
-                        initSinglesRecyclerView(it.trending!!)
+
+                        complete(it.trending!!)
                     }
                 }
             } catch (e: Exception) {
@@ -157,17 +174,16 @@ class RankingFragment : Fragment() {
                 Toolbox.showSimpleCustomDialog(this@RankingFragment.requireContext(),
                     getString(R.string.label_error_api),
                     getString(R.string.action_retry),
-                    null,
-                    {
-                        getUSTrendingSinglesAPICall()
-                    }
-                )
+                    null
+                ) {
+                    getUSTrendingSinglesAPICall {}
+                }
             }
         }
     }
 
 
-    private fun getUSTrendingAlbumsAPICall() {
+    private fun getUSTrendingAlbumsAPICall(complete: (ArrayList<RankingAlbum>) -> Unit) {
         initLoadingDataView()
 
         GlobalScope.launch(Dispatchers.Main) {
@@ -182,8 +198,7 @@ class RankingFragment : Fragment() {
                             it.chartPlace?.toInt()
                         }
 
-                        manageOnClickTabLayout(rankingAlbums = it.trending!!)
-                        initAlbumsRecyclerView(it.trending!!)
+                        complete(it.trending!!)
                     }
                 }
             } catch (e: Exception) {
@@ -191,12 +206,37 @@ class RankingFragment : Fragment() {
                 Toolbox.showSimpleCustomDialog(this@RankingFragment.requireContext(),
                     getString(R.string.label_error_api),
                     getString(R.string.action_retry),
-                    null,
-                    {
-                        getUSTrendingAlbumsAPICall()
-                    }
-                )
+                    null
+                ) {
+                    getUSTrendingAlbumsAPICall {}
+                }
             }
         }
+    }
+
+    override fun onClickArtist(single: RankingSingle) {
+        val fragment = ArtistDetailsFragment()
+        val args = Bundle()
+        args.putString(ARTIST, single.artist)
+        fragment.arguments = args
+
+        parentFragmentManager
+                .beginTransaction()
+                .addToBackStack("RankingFragment")
+                .replace(R.id.nav_host_fragment, fragment)
+                .commit()
+    }
+
+    override fun onClickArtist(album: RankingAlbum) {
+        val fragment = ArtistDetailsFragment()
+        val args = Bundle()
+        args.putString(ARTIST, album.artist)
+        fragment.arguments = args
+
+        parentFragmentManager
+                .beginTransaction()
+                .addToBackStack("RankingFragment")
+                .replace(R.id.nav_host_fragment, fragment)
+                .commit()
     }
 }

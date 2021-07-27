@@ -1,16 +1,16 @@
-package com.artfelt.theaudiodb.ui.ranking
+package com.artfelt.theaudiodb.ui.ranking.rankingsingle
 
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.artfelt.theaudiodb.R
-import com.artfelt.theaudiodb.models.RankingSingle
+import com.artfelt.theaudiodb.models.single.RankingSingle
 import com.artfelt.theaudiodb.utils.setImageURL
 
 class RankingSingleViewHolder(
     val container: View,
-    //private val listener: ArtworkDelegate
+    private val listener: RankingSingleDelegate
 ) : RecyclerView.ViewHolder(container) {
 
     private var mSinglePosition: TextView = container.findViewById(R.id.textView_id_title_ranking)
@@ -22,6 +22,7 @@ class RankingSingleViewHolder(
     fun bindView(single: RankingSingle) {
         initView(single)
 
+        manageOnClickArtist(single)
     }
 
 
@@ -50,5 +51,11 @@ class RankingSingleViewHolder(
 
     private fun initSingleTitle(single: RankingSingle) {
         mSingleTitle.text = single.track
+    }
+
+    private fun manageOnClickArtist(single: RankingSingle) {
+        container.setOnClickListener {
+            listener.onClickArtist(single)
+        }
     }
 }

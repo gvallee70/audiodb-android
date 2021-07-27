@@ -1,16 +1,15 @@
-package com.artfelt.theaudiodb.ui.ranking
+package com.artfelt.theaudiodb.ui.ranking.rankingalbum
 
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.artfelt.theaudiodb.R
-import com.artfelt.theaudiodb.models.RankingAlbum
-import com.artfelt.theaudiodb.models.RankingSingle
+import com.artfelt.theaudiodb.models.album.RankingAlbum
 
 class RankingAlbumsAdapter(val context: Context,
-                            private var albums: ArrayList<RankingAlbum>,
-    //private val listener: ArtworkDelegate
+                           private var albums: ArrayList<RankingAlbum>,
+                            private val listener: RankingAlbumDelegate
 ) : RecyclerView.Adapter<RankingAlbumViewHolder>() {
 
     var rankingAlbumList = ArrayList<RankingAlbum>(albums)
@@ -19,7 +18,7 @@ class RankingAlbumsAdapter(val context: Context,
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RankingAlbumViewHolder {
         return RankingAlbumViewHolder(
             LayoutInflater.from(context).inflate(R.layout.item_ranking_title, parent, false),
-            //listener
+            listener
         )
     }
 

@@ -1,4 +1,4 @@
-package com.artfelt.theaudiodb.models
+package com.artfelt.theaudiodb.models.album
 
 import com.google.gson.annotations.SerializedName
 

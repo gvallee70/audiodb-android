@@ -1,17 +1,17 @@
-package com.artfelt.theaudiodb.ui.ranking
+package com.artfelt.theaudiodb.ui.ranking.rankingalbum
 
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.artfelt.theaudiodb.R
-import com.artfelt.theaudiodb.models.RankingAlbum
-import com.artfelt.theaudiodb.models.RankingSingle
+import com.artfelt.theaudiodb.models.album.RankingAlbum
+import com.artfelt.theaudiodb.models.single.RankingSingle
 import com.artfelt.theaudiodb.utils.setImageURL
 
 class RankingAlbumViewHolder(
     val container: View,
-    //private val listener: ArtworkDelegate
+    private val listener: RankingAlbumDelegate
 ) : RecyclerView.ViewHolder(container) {
 
     private var mAlbumPosition: TextView = container.findViewById(R.id.textView_id_title_ranking)
@@ -23,6 +23,7 @@ class RankingAlbumViewHolder(
     fun bindView(album: RankingAlbum) {
         initView(album)
 
+        manageOnClickArtist(album)
     }
 
 
@@ -51,5 +52,11 @@ class RankingAlbumViewHolder(
 
     private fun initAlbumTitle(album: RankingAlbum) {
         mAlbumTitle.text = album.album
+    }
+
+    private fun manageOnClickArtist(album: RankingAlbum) {
+        container.setOnClickListener {
+            listener.onClickArtist(album)
+        }
     }
 }
