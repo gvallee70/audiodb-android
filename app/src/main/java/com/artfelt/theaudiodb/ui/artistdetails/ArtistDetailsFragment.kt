@@ -1,5 +1,7 @@
 package com.artfelt.theaudiodb.ui.artistdetails
 
+import android.graphics.Color
+import android.graphics.PorterDuff
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -109,6 +111,7 @@ class ArtistDetailsFragment: Fragment(), AlbumDelegate {
     }
 
     private fun initArtistHeaderView() {
+        mArtistHeaderImageView.setColorFilter(Color.LTGRAY, PorterDuff.Mode.DARKEN)
         if(!mArtist.thumbnail.isNullOrEmpty()) {
             mArtistHeaderImageView.setImageURL(mArtist.thumbnail!!)
         }

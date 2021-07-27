@@ -69,7 +69,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15dp"
                 android:layout_marginTop="5dp"
-                android:textColor="@color/grey"
+                android:textColor="@color/lightGrey"
                 app:layout_constraintStart_toEndOf="@id/imageView_album_thumbnail"
                 app:layout_constraintTop_toBottomOf="@id/textView_album_name"
                 tools:text="7 chansons" />
