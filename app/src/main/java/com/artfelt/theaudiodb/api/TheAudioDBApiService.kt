@@ -21,6 +21,9 @@ interface TheAudioDBApiService {
     @GET("search.php")
     suspend fun getArtistDetails(@Query("s") artistName: String): Response<ArtistDetailsResponse>
 
+    @GET("searchalbum.php")
+    suspend fun getArtistAlbumsDetails(@Query("s") artistName: String): Response<ArtistAlbumResponse>
+
 
     @GET("discography.php")
     suspend fun getArtistDiscography(@Query("s") artistName: String): Response<ArtistAlbumResponse>

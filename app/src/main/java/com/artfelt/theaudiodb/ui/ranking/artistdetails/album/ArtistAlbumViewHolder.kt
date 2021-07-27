@@ -14,7 +14,7 @@ class ArtistAlbumViewHolder(
 
     private var mAlbumImage: ImageView = container.findViewById(R.id.imageView_artist_album_cell)
     private var mAlbumName: TextView = container.findViewById(R.id.textView_artist_name)
-    private var mAlbumReleasedYear: TextView = container.findViewById(R.id.textView_album_date)
+    private var mAlbumReleasedYear: TextView = container.findViewById(R.id.textView_album_subtitle)
 
 
     fun bindView(album: Album) {

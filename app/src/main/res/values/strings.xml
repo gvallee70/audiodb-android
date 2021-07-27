@@ -4,6 +4,8 @@
     <string name="title_searching">Recherche</string>
     <string name="title_favorites">Favoris</string>
     <string name="title_search">Rechercher</string>
+    <string name="placeholder_search">Rechercher un artiste...</string>
+    <string name="label_artists">Artistes</string>
     <string name="label_albums">Albums</string>
     <string name="label_titles">Titres</string>
     <string name="label_loading_data">Chargement des données...</string>

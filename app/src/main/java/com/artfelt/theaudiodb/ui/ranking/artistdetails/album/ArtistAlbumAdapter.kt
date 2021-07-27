@@ -17,7 +17,7 @@ class ArtistAlbumAdapter(val context: Context,
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ArtistAlbumViewHolder {
         return ArtistAlbumViewHolder(
-                LayoutInflater.from(context).inflate(R.layout.item_artist_album, parent, false),
+                LayoutInflater.from(context).inflate(R.layout.item_album, parent, false),
                 //listener
         )
     }

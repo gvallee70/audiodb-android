@@ -6,7 +6,6 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.artfelt.theaudiodb.R
 import com.artfelt.theaudiodb.models.album.RankingAlbum
-import com.artfelt.theaudiodb.models.single.RankingSingle
 import com.artfelt.theaudiodb.utils.setImageURL
 
 class RankingAlbumViewHolder(
@@ -56,7 +55,7 @@ class RankingAlbumViewHolder(
 
     private fun manageOnClickArtist(album: RankingAlbum) {
         container.setOnClickListener {
-            listener.onClickArtist(album)
+            listener.onClickAlbum(album)
         }
     }
 }

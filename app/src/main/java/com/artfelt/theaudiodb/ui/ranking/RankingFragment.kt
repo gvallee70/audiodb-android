@@ -214,7 +214,7 @@ class RankingFragment : Fragment(), RankingSingleDelegate, RankingAlbumDelegate 
         }
     }
 
-    override fun onClickArtist(single: RankingSingle) {
+    override fun onClickSingle(single: RankingSingle) {
         val fragment = ArtistDetailsFragment()
         val args = Bundle()
         args.putString(ARTIST, single.artist)
@@ -227,7 +227,8 @@ class RankingFragment : Fragment(), RankingSingleDelegate, RankingAlbumDelegate 
                 .commit()
     }
 
-    override fun onClickArtist(album: RankingAlbum) {
+
+    override fun onClickAlbum(album: RankingAlbum) {
         val fragment = ArtistDetailsFragment()
         val args = Bundle()
         args.putString(ARTIST, album.artist)

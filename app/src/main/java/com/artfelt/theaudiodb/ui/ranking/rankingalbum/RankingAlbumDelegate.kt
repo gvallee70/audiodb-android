@@ -4,6 +4,6 @@ import com.artfelt.theaudiodb.models.album.RankingAlbum
 import com.artfelt.theaudiodb.models.single.RankingSingle
 
 interface RankingAlbumDelegate {
-    fun onClickArtist(album: RankingAlbum)
+    fun onClickAlbum(album: RankingAlbum)
 
 }

@@ -55,7 +55,7 @@ class RankingSingleViewHolder(
 
     private fun manageOnClickArtist(single: RankingSingle) {
         container.setOnClickListener {
-            listener.onClickArtist(single)
+            listener.onClickSingle(single)
         }
     }
 }

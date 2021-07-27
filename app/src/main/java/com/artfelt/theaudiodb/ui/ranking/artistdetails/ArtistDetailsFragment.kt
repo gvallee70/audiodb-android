@@ -233,13 +233,6 @@ class ArtistDetailsFragment: Fragment() {
                 }
             } catch (e: Exception) {
                 println(e.message)
-                Toolbox.showSimpleCustomDialog(this@ArtistDetailsFragment.requireContext(),
-                        getString(R.string.label_error_api),
-                        getString(R.string.action_retry),
-                        null
-                ) {
-                    getArtistLikedSinglesAPICall {}
-                }
             }
         }
     }
