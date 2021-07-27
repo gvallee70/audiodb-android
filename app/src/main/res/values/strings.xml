@@ -8,6 +8,7 @@
     <string name="label_artists">Artistes</string>
     <string name="label_albums">Albums</string>
     <string name="label_titles">Titres</string>
+    <string name="label_my_favorites">Mes artistes &amp; albums</string>
     <string name="label_loading_data">Chargement des données...</string>
     <string name="label_error_api">Impossible de récupérer certaines données</string>
     <string name="action_retry">Réessayer</string>
